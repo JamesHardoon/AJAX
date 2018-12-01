@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>AJAX发送请求并传递参数</title>
+</head>
+	<ul id="list"></ul>
+		<!-- <li>张三</a></li>
+		<li>李四</a></li>
+		<li>王五</a></li>
+		<li>赵六</a> -->
+
+	<script>
+		// var xhr = new XMLHttpRequest();
+
+		// // xhr.open('GET','users.php');
+		
+		// // 这里仍然是使用URL中的问号参数传递数据
+		// xhr.open('GET','e:/Software/wamp64/www/AJAXTest.php?id=2')
+
+		// xhr.send(null);
+
+		// xhr.onreadystatechange = function () {
+		// 	if (this.readystatechange !== 4) return;
+		// 	console.log(this.responseText);
+		// }
+		
+		var listElement = document.getElementById('list');
+		//发送请求获取列表数据,呈现在页面上
+		//=====================================================
+
+		var xhr = new XMLHttpRequest();
+
+		xhr.open('GET','users.php');
+
+		xhr.send();
+
+		xhr.onreadystatechange = function () {
+			if (this.readyState !== 4) return;
+			var data = JSON.parse(this.responseText);
+			console.log(data);
+
+			for (var i = 0; i < data.length; i++) {
+				//console.log(data[i]);
+				var listElement = document.createElement('li');
+				liElement.innerHTML = data[i].name;
+
+				liElement.id = data[i].id;
+
+				listElement.appendChild(liElement);
+
+			 	listElement.children[i].addEventListener('click' , function () {
+			 		//console.log("测试有没有执行");
+			 		//TODO:通过AJAX操作获取服务端对应数据的信息
+			 		//如何获取当前被点击元素的数据ID
+			 		// console.log(data[i].id);
+			 		console.log(this.id);
+			 		var xhr1 = new XMLHttpRequest();
+			 		xhr1.open('GET','users.php?id=' + this.id)
+			 		xhr1.send();
+			 		xhr1.onreadystatechange = function () {
+			 			if(this.readyState !== 4) return;
+			 			var obj = JSON.parse(this.responseText);
+			 			alert(obj.age);
+
+			 		}
+			 	});
+			}
+		}
+
+
+		//给每个li注册点击事件
+		//不能在这里注册事件,因为li是后来动态创建的,所以不能这样注册事件
+		// for (var i = 0; i < listElement.children.length; i++) {
+		// 	listElement.children[i].addEventListener('click' , function () {
+		// 		console.log(111);
+		// 	});
+		// }
+
+	</script>
+</body>
+</html>

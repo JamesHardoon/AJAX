@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var xhrAsync = new XMLHttpRequest();
+		//open方法的第三个参数是async可以传入一个布尔值,默认为true
+		xhrAsync.open('GET' , 'time.php' , true);
+		console.time('async');
+		xhrAsync.send();
+		console.log(xhrAsync.responseText);
+		console.timeEnd('async');
+
+		//同步模式:ajax操作会有愣等的情况
+		//同步与异步的区别在于send()方法会不会出现等待的情况,异步不会
+		var xhrSync = new XMLHttpRequest();
+		xhrSync.open('GET' , 'time.php' , false);
+		console.time('sync');
+		xhrSync.send();//测试表明同步会在此处出现等待情况
+		console.log(xhrSync.responseText);
+		console.timeEnd('sync');
+	</script>
+</body>
+</html>

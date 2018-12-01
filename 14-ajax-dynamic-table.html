@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>AJAX 动态表格渲染</title>
+</head>
+<body>
+	
+	<!-- 将数据呈现的表格中 -->
+	<table id="demo"></table>
+	<!-- 
+		script标签的特点是：
+		1.innerH 永远不会显示在界面上
+		2.如果 type 不等于 text/javascript 的话，内部的内容不会作为 JavaScript 执行
+	 -->
+	 <!-- 模板引擎的type不要写成text/javascript,建议写成x-‘模板的名称’ -->
+	<script id="tmpl" type="text/x-art-template">
+		{{each comments}}
+		<!-- each 内部 $value 拿到的是当前被遍历的那个元素(数组中的元素)-->
+			<tr>
+				<td>{{$index}}{{$value.author}}</td>
+				<td>{{$value.content}}</td>
+				<!-- $index获取下标 -->
+				<td>{{$value.created}}</td>
+			</tr>
+
+		{{/each}}
+
+	</script>
+	<!-- 引入art-template模板引擎 -->
+	<script src="template-web.js"></script> 
+	<script>
+		
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET' , 'test.php');
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			if (this.readyState !== 4)
+			return;
+			// var res = JSON.parse(this.responseText);//如果文件本身就是JSON就不需要使用这用方式进行转换
+			var res = JSON.parse(this.responseText);
+			//console.log(res);
+			
+			//模板所需数据 放到context中
+			var context = {comments: res.data};
+			//var html = template('tmpl' , context);
+			//借助模板引擎的API渲染数据
+			//template('模板标记的id' , 数据);
+			var html = template('tmpl' , context);
+			console.log(html);
+
+			//将数据显示到页面上
+			document.getElementById('demo').innerHTML = html;
+
+			//1.选择一个模板引擎
+			//常用的模板引擎地址 https://github.com/tj/consolidate.js#supported-template-engines
+			//2.下载模板引擎JS文件
+			//3.引入到页面中
+			//4.准备一个模板
+			//5.准备一个数据
+			//6.通过模板引擎的JS提供的一个函数将模板和数据整合得到渲染结果HTML
+			//7.将渲染结果的HTML 设置到 默认元素的  innerHTML 中
+		} 
+
+	</script>
+</body>
+</html>

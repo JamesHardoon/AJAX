@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		var xhr = new XMLHttpRequest();
+		//默认为true,改为false后即改为了同步模式
+		xhr.open('GET' , 'time.php' , false);
+		xhr.send();//同步模式下,会等到请求响应的过程全部完成后再继续
+		//那么在此时打印xhr.readyState时,已经为4
+		//console.log(xhr.readyState);//4
+		xhr.onadystatechange = function () {
+			console.log(this.readyState);//不会打印什么,因为send()语句后状态已经变为了4
+		}
+		console.log("=======================================");
+		
+		//异步模式下
+		var xhr1 = new XMLHttpRequest();
+		xhr1.open('GET' , 'time.php' , true);
+		xhr1.send();
+		//一定要注意事件注册时机问题
+		console.log(xhr1.readyState);//1
+		xhr1.onreadystatechange = function () {
+			console.log(this.readyState);//2,3,4
+		}
+
+	</script>
+</body>
+</html>

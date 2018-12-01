@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		function foo () {
+			function bar () {
+				return 123;
+			}
+			bar();//======1
+			//应该将bar()函数的调用返回
+			// return bar();//=======2
+		}
+		console.log(foo());//undeined//=======1
+		// console.log(foo());//123//=======2
+
+
+		function foo1 () {
+			setTimeout(function () {
+				return 123;
+			}, 1000)
+		}
+		console.log(foo1());//undefined
+
+		function foo2() {
+			var res;
+			function bar() {
+				res = 123;
+			}
+			bar();
+			return res;
+		}
+		console.log(foo2());//123
+	</script>
+</body>
+</html>

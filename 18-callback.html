@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script>
+
+		//封装者
+		//====================================
+		function getTimestamp (done) {
+			setTimeout(function () {
+
+				//执行调用者指定的事情
+				done(Date.now());
+
+			}, 1000);
+		}
+
+
+		//调用者
+		//=====================================
+		
+		//指定拿到数据之后做什么(调用者指定指定封装者拿到数据之后做什么)
+		var done = function (timestamp) {
+
+			console.log(timestamp / 1000 / 60 / 60);
+		}
+
+		getTimestamp(done);
+	</script>
+</body>
+</html>

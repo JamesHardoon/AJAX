@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script>
+		//封装者
+		//=====================================================
+		function ajax (method , url , params , done) {
+			var res = null;
+			method = method.toUpperCase();
+			var xhr = new XMLHttpRequest();
+
+			//将object类型的参数转换为key=value&key=value的形式
+			if (typeof params === 'object') {
+				var tempArr = [];
+				for( var key in params ){
+					var value = params[key];
+					tempArr.push( key + '=' + value );
+				}
+				//tempArr ==> ['key1=value1' , 'key2=value2']
+				params = tempArr.join('&');
+				//此时,tempArr ==> 'key1=value1&key2=value2'
+			}
+
+			if (method === 'GET') {
+				url += '?' + params;
+			}	
+
+			xhr.open(method , url , false);
+
+			//如果method是POST请求,那么data就为params,否则data就为null
+			var data = null;
+			if (method === 'POST') {
+				xhr.setRequestHeader('Content-Type' , 'application/x-www-form-urlencoded');//否则POST请求下会出现array(0){}的情况
+				data = params;
+			}
+			
+			xhr.onreadystatechange = function () {
+				if (this.readyState !== 4) return;
+				//不应该在封装的函数中主观的处理响应结果
+				// console.log(this.responseText);
+				// 你说我太主观,那么你告诉我应该做什么
+				done(this.respondseText);
+			}
+			xhr.send(data); 
+		}
+
+		//调用者
+		//=====================================================
+		
+		var onDone = function (res) {
+			console.log('hahahaha');
+			console.log('hohohoho');
+			console.log(res);
+			console.log('做完了');
+		}
+
+		ajax('GET' , 'time.php' , {} , onDone);
+
+	</script>
+</body>
+</html>
